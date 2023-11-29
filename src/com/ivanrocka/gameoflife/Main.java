@@ -1,3 +1,5 @@
+package com.ivanrocka.gameoflife;
+
 import java.util.Scanner;
 
 public class Main {
@@ -5,6 +7,7 @@ public class Main {
     static int[][] grid_int;
     static int max_grid_size = 50;
     static int grid_size = 0;
+    static boolean show_must_go_on = true;
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int input_data = 0;
@@ -28,7 +31,19 @@ public class Main {
         // выводим стартовое игровое поле с заполненными "живыми клетками"
         System.out.println("Стартовая позиция игрового поля: \n");
         print_grid();
-        System.out.println("Чтобы начать генерацию введите команду 'start' и нажмите Enter\n");
+        System.out.println("Чтобы начать игру введите команду 'start' и нажмите Enter\n ");
+        while (!scanner.nextLine().equals("start")) {
+            // Как только пользователь введет start прекратим выполнять бесконечный цикл ожидания и перейдем к игре
+        }
+        System.out.println("В процессе игры введите 'n' чтобы получить новую генерацию или введите 'q' чтобы выйти. \n");
+        while(show_must_go_on) {
+            String cur_command = scanner.nextLine();
+            if (cur_command.equals("n")) {
+                start_generation();
+            } else if (cur_command.equals("q")) {
+                show_must_go_on = false;
+            }
+        }
 
     }
     public static void print_grid() {
@@ -91,10 +106,49 @@ public class Main {
     }
 
     public static void start_generation() {
+        char up_line;
+        int alive_neighborhood = 0;
         // если соседей меньше двух, то умирает
         // если соседей 2 или 3 то продолжает жить
         // если соседей больше 3, то тоже умирает
         // если у мертвой клетки 3 живых соседа, то она оживает
+        for (int i = 0; i < grid_size; i++) {
+            for (int j = 0; j < grid_size; j++) {
+                if ((i != 0)&&(j!=0)) {
+                    alive_neighborhood += grid_int[i-1][j-1];
+                    }
+                if (i > 0) {
+                    alive_neighborhood += grid_int[i-1][j];
+                    if(j < grid_size-1) {
+                        alive_neighborhood += grid_int[i-1][j+1];
+                    }
+                }
+                if (j > 0) {
+                    alive_neighborhood += grid_int[i][j-1];
+                    if(i < grid_size-1) {
+                        alive_neighborhood += grid_int[i+1][j-1];
+                    }
+                }
+                if (i < grid_size-1) {
+                    alive_neighborhood += grid_int[i+1][j];
+                }
+                if (j < grid_size-1) {
+                    alive_neighborhood += grid_int[i][j+1];
+                    if (i < grid_size-1) {
+                        alive_neighborhood += grid_int[i+1][j+1];
+                    }
+                }
+                if (grid_int[i][j] == 0) {
+                    grid_int[i][j] = (alive_neighborhood == 3) ? 1 : 0;
+                }
+                else {
+                    grid_int[i][j] = (((alive_neighborhood == 2) || (alive_neighborhood == 3))) ? 1 : 0;
+                }
+                alive_neighborhood = 0;
+            }
+        }
+        print_grid();
+
     }
 
 }
