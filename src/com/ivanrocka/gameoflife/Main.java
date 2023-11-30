@@ -1,5 +1,7 @@
 package com.ivanrocka.gameoflife;
 
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
 public class Main {
@@ -8,10 +10,10 @@ public class Main {
     static int max_grid_size = 50;
     static int grid_size = 0;
     static boolean show_must_go_on = true;
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedEncodingException {
         Scanner scanner = new Scanner(System.in);
         int input_data = 0;
-        System.out.println("Введите размер grid_size игрового поля: \n" + "Будет создано поле с размерами grid_size X grid_size, максимальный размер: " + max_grid_size);
+        System.out.println("Please, enter the grid size of the playing field: \n" + "A field will be created with the dimensions 'input_size X input_size', the maximum grid size: " + max_grid_size);
 //                "Введите кол-во строк и нажмите Enter: \n" +
 //                "Введите кол-во столбцов и нажмите Enter: \n");
         input_data = scanner.nextInt();
@@ -24,18 +26,18 @@ public class Main {
         // начальное игровое поле
         set_Default_settings_grid_int();
         print_grid();
-        System.out.println("Введите индексы 'живых клеток' через пробел в виде: 'номер_строки номер_столбца' и нажмите Enter \n" +
-                "После окончания ввода расположения всех 'живых' клеток введите 'end'");
+        System.out.println("Please, enter the indexes of 'living cells' separated by a space, for example: '4 6', and press Enter \n" +
+                "After you finish entering the location of all 'live' cells, enter 'end' and press Enter");
         // Получаем от пользователя расположение живых клеток
         get_living_cells(scanner);
         // выводим стартовое игровое поле с заполненными "живыми клетками"
-        System.out.println("Стартовая позиция игрового поля: \n");
+        System.out.println("Starting position of the playing field: \n");
         print_grid();
-        System.out.println("Чтобы начать игру введите команду 'start' и нажмите Enter\n ");
+        System.out.println("To start the game, type the command 'start' and press Enter\n ");
         while (!scanner.nextLine().equals("start")) {
             // Как только пользователь введет start прекратим выполнять бесконечный цикл ожидания и перейдем к игре
         }
-        System.out.println("В процессе игры введите 'n' чтобы получить новую генерацию или введите 'q' чтобы выйти. \n");
+        System.out.println("During the game, enter 'n' to get a new generation or enter 'q' to exit \n");
         while(show_must_go_on) {
             String cur_command = scanner.nextLine();
             if (cur_command.equals("n")) {
@@ -85,12 +87,12 @@ public class Main {
                         input_cells[count_living_cell][1] = col - 1;
                         count_living_cell++;
                     } else {
-                        System.out.println("Введеный индекс выходит за пределы поля: максимальный индекс строки = " + grid_size);
-                        System.out.println("Введеный индекс выходит за пределы поля: максимальный индекс столбца = " + grid_size);
+                        System.out.println("The entered index goes beyond the field: maximum row index = " + grid_size);
+                        System.out.println("The entered index goes beyond the field: maximum column index = " + grid_size);
                     }
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                     if (!input_data.equals("end")) {
-                        System.out.println("Введен неверный формат");
+                        System.out.println("Invalid format entered!");
                     }
                 }
             }
